@@ -17,6 +17,9 @@ export default function OnboardingScreen4() {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.skipButton} onPress={finishOnboarding}>
+        <Text style={styles.skipButtonText}>Skip</Text>
+      </TouchableOpacity>
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
@@ -120,6 +123,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  skipButton: {
+    position: 'absolute',
+    top: 48,
+    right: 24,
+    zIndex: 1,
+  },
+  skipButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#000',
   },
   scrollView: {
     flex: 1,
