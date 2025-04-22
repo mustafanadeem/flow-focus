@@ -1,7 +1,8 @@
 import { Tabs } from 'expo-router';
 import { StyleSheet } from 'react-native';
-import { LockKeyhole, Timer, ChartBar as BarChart3, Trophy } from 'lucide-react-native';
+import { Lock, Timer, BarChart2, Trophy, Settings } from 'lucide-react-native';
 import { colors } from '@/styles/colors';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function TabLayout() {
   return (
@@ -9,8 +10,10 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textSecondary,
-        tabBarStyle: styles.tabBar,
-        tabBarLabelStyle: styles.tabBarLabel,
+        tabBarStyle: {
+          backgroundColor: colors.background,
+          borderTopColor: colors.border,
+        },
         headerShown: false,
       }}
     >
@@ -18,36 +21,35 @@ export default function TabLayout() {
         name="focus"
         options={{
           title: 'Focus',
-          tabBarIcon: ({ color, size }) => (
-            <LockKeyhole size={size} color={color} />
-          ),
+          tabBarIcon: ({ color }) => <Lock size={24} color={color} />,
         }}
       />
       <Tabs.Screen
-        name="timer/index"
+        name="timer"
         options={{
           title: 'Timer',
-          tabBarIcon: ({ color, size }) => (
-            <Timer size={size} color={color} />
-          ),
+          tabBarIcon: ({ color }) => <Timer size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="analytics"
         options={{
           title: 'Analytics',
-          tabBarIcon: ({ color, size }) => (
-            <BarChart3 size={size} color={color} />
-          ),
+          tabBarIcon: ({ color }) => <BarChart2 size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="achievements"
         options={{
-          title: 'Achievements',
-          tabBarIcon: ({ color, size }) => (
-            <Trophy size={size} color={color} />
-          ),
+          title: 'Achieve',
+          tabBarIcon: ({ color }) => <Trophy size={24} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Settings',
+          tabBarIcon: ({ color }) => <Settings size={24} color={color} />,
         }}
       />
     </Tabs>
