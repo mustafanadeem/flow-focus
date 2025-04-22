@@ -10,7 +10,6 @@ type TimerSettingsProps = {
   longBreakDuration: number;
   onApply: (focus: number, shortBreak: number, longBreak: number) => void;
   onCancel: () => void;
-  visible: boolean;
 };
 
 export default function TimerSettings({
@@ -19,27 +18,18 @@ export default function TimerSettings({
   longBreakDuration,
   onApply,
   onCancel,
-  visible,
 }: TimerSettingsProps) {
   const [focus, setFocus] = useState(focusDuration);
   const [shortBreak, setShortBreak] = useState(shortBreakDuration);
   const [longBreak, setLongBreak] = useState(longBreakDuration);
 
-  const increment = (
-    value: number,
-    setter: (value: number) => void,
-    max: number = 60
-  ) => {
+  const increment = (value: number, setter: (value: number) => void, max: number = 60) => {
     if (value < max) {
       setter(value + 1);
     }
   };
 
-  const decrement = (
-    value: number,
-    setter: (value: number) => void,
-    min: number = 1
-  ) => {
+  const decrement = (value: number, setter: (value: number) => void, min: number = 1) => {
     if (value > min) {
       setter(value - 1);
     }
@@ -49,107 +39,102 @@ export default function TimerSettings({
     <Modal
       animationType="fade"
       transparent={true}
-      visible={visible}
+      visible={true}
       onRequestClose={onCancel}
     >
-      <Pressable style={styles.modalOverlay} onPress={onCancel}>
-        <Pressable
-          style={styles.modalContentWrapper}
-          onPress={(e) => e.stopPropagation()}
-        >
-          <Card style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Timer Settings</Text>
-              <Pressable style={styles.closeButton} onPress={onCancel}>
-                <X size={20} color={colors.textSecondary} />
-              </Pressable>
-            </View>
-
-            <View style={styles.settingRow}>
-              <Text style={styles.settingLabel}>Focus Duration</Text>
-              <View style={styles.durationControls}>
-                <Pressable
-                  style={styles.durationButton}
-                  onPress={() => decrement(focus, setFocus)}
-                >
-                  <ChevronDown size={20} color={colors.textSecondary} />
-                </Pressable>
-
-                <Text style={styles.durationValue}>{focus} min</Text>
-
-                <Pressable
-                  style={styles.durationButton}
-                  onPress={() => increment(focus, setFocus)}
-                >
-                  <ChevronUp size={20} color={colors.textSecondary} />
-                </Pressable>
-              </View>
-            </View>
-
-            <View style={styles.divider} />
-
-            <View style={styles.settingRow}>
-              <Text style={styles.settingLabel}>Short Break</Text>
-              <View style={styles.durationControls}>
-                <Pressable
-                  style={styles.durationButton}
-                  onPress={() => decrement(shortBreak, setShortBreak)}
-                >
-                  <ChevronDown size={20} color={colors.textSecondary} />
-                </Pressable>
-
-                <Text style={styles.durationValue}>{shortBreak} min</Text>
-
-                <Pressable
-                  style={styles.durationButton}
-                  onPress={() => increment(shortBreak, setShortBreak)}
-                >
-                  <ChevronUp size={20} color={colors.textSecondary} />
-                </Pressable>
-              </View>
-            </View>
-
-            <View style={styles.divider} />
-
-            <View style={styles.settingRow}>
-              <Text style={styles.settingLabel}>Long Break</Text>
-              <View style={styles.durationControls}>
-                <Pressable
-                  style={styles.durationButton}
-                  onPress={() => decrement(longBreak, setLongBreak, 5)}
-                >
-                  <ChevronDown size={20} color={colors.textSecondary} />
-                </Pressable>
-
-                <Text style={styles.durationValue}>{longBreak} min</Text>
-
-                <Pressable
-                  style={styles.durationButton}
-                  onPress={() => increment(longBreak, setLongBreak)}
-                >
-                  <ChevronUp size={20} color={colors.textSecondary} />
-                </Pressable>
-              </View>
-            </View>
-
-            <View style={styles.buttonContainer}>
-              <Pressable
-                style={[styles.button, styles.cancelButton]}
-                onPress={onCancel}
+      <View style={styles.modalOverlay}>
+        <Card style={styles.modalContent}>
+          <View style={styles.modalHeader}>
+            <Text style={styles.modalTitle}>Timer Settings</Text>
+            <Pressable style={styles.closeButton} onPress={onCancel}>
+              <X size={20} color={colors.textSecondary} />
+            </Pressable>
+          </View>
+          
+          <View style={styles.settingRow}>
+            <Text style={styles.settingLabel}>Focus Duration</Text>
+            <View style={styles.durationControls}>
+              <Pressable 
+                style={styles.durationButton}
+                onPress={() => decrement(focus, setFocus)}
               >
-                <Text style={styles.cancelButtonText}>Cancel</Text>
+                <ChevronDown size={20} color={colors.textSecondary} />
               </Pressable>
-
-              <Pressable
-                style={[styles.button, styles.applyButton]}
-                onPress={() => onApply(focus, shortBreak, longBreak)}
+              
+              <Text style={styles.durationValue}>{focus} min</Text>
+              
+              <Pressable 
+                style={styles.durationButton}
+                onPress={() => increment(focus, setFocus)}
               >
-                <Text style={styles.applyButtonText}>Apply</Text>
+                <ChevronUp size={20} color={colors.textSecondary} />
               </Pressable>
             </View>
-          </Card>
-        </Pressable>
-      </Pressable>
+          </View>
+          
+          <View style={styles.divider} />
+          
+          <View style={styles.settingRow}>
+            <Text style={styles.settingLabel}>Short Break</Text>
+            <View style={styles.durationControls}>
+              <Pressable 
+                style={styles.durationButton}
+                onPress={() => decrement(shortBreak, setShortBreak)}
+              >
+                <ChevronDown size={20} color={colors.textSecondary} />
+              </Pressable>
+              
+              <Text style={styles.durationValue}>{shortBreak} min</Text>
+              
+              <Pressable 
+                style={styles.durationButton}
+                onPress={() => increment(shortBreak, setShortBreak)}
+              >
+                <ChevronUp size={20} color={colors.textSecondary} />
+              </Pressable>
+            </View>
+          </View>
+          
+          <View style={styles.divider} />
+          
+          <View style={styles.settingRow}>
+            <Text style={styles.settingLabel}>Long Break</Text>
+            <View style={styles.durationControls}>
+              <Pressable 
+                style={styles.durationButton}
+                onPress={() => decrement(longBreak, setLongBreak, 5)}
+              >
+                <ChevronDown size={20} color={colors.textSecondary} />
+              </Pressable>
+              
+              <Text style={styles.durationValue}>{longBreak} min</Text>
+              
+              <Pressable 
+                style={styles.durationButton}
+                onPress={() => increment(longBreak, setLongBreak)}
+              >
+                <ChevronUp size={20} color={colors.textSecondary} />
+              </Pressable>
+            </View>
+          </View>
+          
+          <View style={styles.buttonContainer}>
+            <Pressable 
+              style={[styles.button, styles.cancelButton]} 
+              onPress={onCancel}
+            >
+              <Text style={styles.cancelButtonText}>Cancel</Text>
+            </Pressable>
+            
+            <Pressable 
+              style={[styles.button, styles.applyButton]} 
+              onPress={() => onApply(focus, shortBreak, longBreak)}
+            >
+              <Text style={styles.applyButtonText}>Apply</Text>
+            </Pressable>
+          </View>
+        </Card>
+      </View>
     </Modal>
   );
 }
@@ -161,9 +146,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
-  },
-  modalContentWrapper: {
-    width: '100%',
   },
   modalContent: {
     width: '100%',
@@ -220,26 +202,30 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    gap: 12,
-    marginTop: 20,
+    marginTop: 24,
   },
   button: {
+    paddingVertical: 12,
     paddingHorizontal: 20,
-    paddingVertical: 10,
     borderRadius: 8,
+    minWidth: 100,
+    alignItems: 'center',
   },
   cancelButton: {
     backgroundColor: colors.background,
-  },
-  cancelButtonText: {
-    fontFamily: 'Inter-Medium',
-    color: colors.textPrimary,
+    marginRight: 12,
   },
   applyButton: {
     backgroundColor: colors.primary,
   },
+  cancelButtonText: {
+    fontFamily: 'Inter-Medium',
+    fontSize: 14,
+    color: colors.textPrimary,
+  },
   applyButtonText: {
     fontFamily: 'Inter-Medium',
+    fontSize: 14,
     color: '#fff',
   },
 });
