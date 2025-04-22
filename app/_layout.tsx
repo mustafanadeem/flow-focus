@@ -10,6 +10,7 @@ import {
   Inter_700Bold,
 } from '@expo-google-fonts/inter';
 import { SplashScreen } from 'expo-router';
+import React from 'react';
 
 SplashScreen.preventAutoHideAsync();
 
