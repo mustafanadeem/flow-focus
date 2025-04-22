@@ -17,7 +17,14 @@
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": []
+      "permissions": [
+    "PACKAGE_USAGE_STATS",
+    "SYSTEM_ALERT_WINDOW",
+    "REQUEST_IGNORE_BATTERY_OPTIMIZATIONS",
+    "FOREGROUND_SERVICE",
+    "RECEIVE_BOOT_COMPLETED",
+    "WAKE_LOCK"
+  ]
     },
     "web": {
       "bundler": "metro",

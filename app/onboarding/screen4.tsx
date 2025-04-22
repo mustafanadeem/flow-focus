@@ -4,12 +4,80 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  Platform,
+  Linking
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import * as IntentLauncher from 'expo-intent-launcher';
+import * as Application from 'expo-application';
 
 export default function OnboardingScreen4() {
   const router = useRouter();
+
+  const requestAppUsagePermission = () => {
+    if (Platform.OS === 'android') {
+      try {
+        if (Platform.OS === 'android') {
+          IntentLauncher.startActivityAsync('android.settings.USAGE_ACCESS_SETTINGS');
+        }
+      } catch (error) {
+        console.error('Error requesting app usage permission:', error);
+      }
+    }
+  };
+
+
+
+  const requestOverlayPermission = async () => {
+    if (Platform.OS === 'android') {
+      const packageName = Application.applicationId;
+  
+      // Overlay permission intent only works on Android 6.0+
+      if (Platform.Version >= 23 && packageName) {
+        try {
+          await IntentLauncher.startActivityAsync(
+            'android.settings.action.MANAGE_OVERLAY_PERMISSION',
+            {
+              data: `package:${packageName}`,
+            }
+          );
+        } catch (error) {
+          console.error('Error requesting overlay permission:', error);
+          Linking.openSettings(); // Fallback if intent fails
+        }
+      } else {
+        console.warn('Overlay permission not supported on this Android version or packageName missing');
+        Linking.openSettings(); // Fallback if not supported
+      }
+    }
+  };
+  
+
+
+  const requestAccessibilityPermission = () => {
+    if (Platform.OS === 'android') {
+      try {
+        if (Platform.OS === 'android') {
+          IntentLauncher.startActivityAsync('android.settings.ACCESSIBILITY_SETTINGS');
+        }
+      } catch (error) {
+        console.error('Error requesting accessibility permission:', error);
+      }
+    }
+  };
+
+  const requestBatteryOptimizationPermission = () => {
+    if (Platform.OS === 'android') {
+      try {
+        if (Platform.OS === 'android') {
+          IntentLauncher.startActivityAsync('android.settings.IGNORE_BATTERY_OPTIMIZATION_SETTINGS');
+        }
+      } catch (error) {
+        console.error('Error requesting battery optimization permission:', error);
+      }
+    }
+  };
 
   const finishOnboarding = () => {
     router.push('/(tabs)/achievements');
@@ -46,7 +114,10 @@ export default function OnboardingScreen4() {
                 Required to detect when a distracting app is opened to block it.
                 Also used to track screen time.
               </Text>
-              <TouchableOpacity style={styles.permissionButton}>
+              <TouchableOpacity
+                style={styles.permissionButton}
+                onPress={requestAppUsagePermission}
+              >
                 <Text style={styles.permissionButtonText}>
                   Grant Permission ≫
                 </Text>
@@ -65,7 +136,10 @@ export default function OnboardingScreen4() {
               <Text style={styles.permissionDescription}>
                 Required to display a block screen over your distracting apps.
               </Text>
-              <TouchableOpacity style={styles.permissionButton}>
+              <TouchableOpacity
+                style={styles.permissionButton}
+                onPress={requestOverlayPermission}
+              >
                 <Text style={styles.permissionButtonText}>
                   Grant Permission ≫
                 </Text>
@@ -85,7 +159,10 @@ export default function OnboardingScreen4() {
                 Required to access website usage and provide more reliable app
                 blocking.
               </Text>
-              <TouchableOpacity style={styles.permissionButton}>
+              <TouchableOpacity
+                style={styles.permissionButton}
+                onPress={requestAccessibilityPermission}
+              >
                 <Text style={styles.permissionButtonText}>Allow</Text>
               </TouchableOpacity>
             </View>
@@ -106,7 +183,10 @@ export default function OnboardingScreen4() {
               <Text style={styles.permissionDescription}>
                 Required for Flow Focus to block apps without being disabled.
               </Text>
-              <TouchableOpacity style={styles.permissionButton}>
+              <TouchableOpacity
+                style={styles.permissionButton}
+                onPress={requestBatteryOptimizationPermission}
+              >
                 <Text style={styles.permissionButtonText}>
                   Grant Permission ≫
                 </Text>
