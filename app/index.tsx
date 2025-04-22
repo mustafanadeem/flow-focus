@@ -1,5 +1,6 @@
 import { Redirect } from 'expo-router';
 
 export default function Index() {
-  return <Redirect href="/onboarding/screen1" />;
+  // Temporarily redirecting directly to timer for development
+  return <Redirect href="/(tabs)/timer" />;
 }
