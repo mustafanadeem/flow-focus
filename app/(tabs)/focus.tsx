@@ -1,15 +1,74 @@
-import { StyleSheet, Text, View, Switch, ScrollView } from 'react-native';
-import { useState } from 'react';
+import { StyleSheet, Text, View, Switch, ScrollView, Alert } from 'react-native';
+import { useState, useEffect } from 'react';
 import { colors } from '@/styles/colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
 import Header from '@/components/Header';
 import Card from '@/components/Card';
+import AppBlocker from '@/services/AppBlocker';
 
 export default function FocusScreen() {
   const [focusModeEnabled, setFocusModeEnabled] = useState(false);
   const [notificationsBlocked, setNotificationsBlocked] = useState(false);
   const [socialBlocked, setSocialBlocked] = useState(false);
   const [hideStats, setHideStats] = useState(false);
+
+  useEffect(() => {
+    if (focusModeEnabled) {
+      handleEnableFocusMode();
+    } else {
+      AppBlocker.disableBlocking();
+    }
+  }, [focusModeEnabled]);
+
+  const handleEnableFocusMode = async () => {
+    const hasPermissions = await AppBlocker.checkPermissions();
+    if (!hasPermissions) {
+      Alert.alert(
+        'Permissions Required',
+        'Flow Focus needs permissions to block apps. Please grant them in the permissions screen.',
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
+            onPress: () => setFocusModeEnabled(false),
+          },
+          {
+            text: 'Go to Permissions',
+            onPress: () => {
+              setFocusModeEnabled(false);
+              router.push('/onboarding/screen4');
+            },
+          },
+        ]
+      );
+    } else {
+      const success = await AppBlocker.enableBlocking();
+      if (!success) {
+        setFocusModeEnabled(false);
+        Alert.alert(
+          'Error',
+          'Failed to enable app blocking. Please check your permissions and try again.',
+          [
+            {
+              text: 'Go to Permissions',
+              onPress: () => router.push('/onboarding/screen4'),
+            },
+          ]
+        );
+      } else {
+        // Set blocked apps (you can customize this list)
+        AppBlocker.setBlockedApps([
+          'com.facebook.katana', // Facebook
+          'com.instagram.android', // Instagram
+          'com.twitter.android', // Twitter
+          'com.whatsapp', // WhatsApp
+          'com.google.android.youtube', // YouTube
+          // Add more apps as needed
+        ]);
+      }
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
