@@ -36,5 +36,9 @@
         <data android:scheme="exp+bolt-expo-nativewind"/>
       </intent-filter>
     </activity>
+    <service
+      android:name=".AppBlockingService"
+      android:enabled="true"
+      android:exported="false" />
   </application>
 </manifest>
